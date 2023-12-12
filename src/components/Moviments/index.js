@@ -6,17 +6,22 @@ export default function Moviments({ data }) {
 
     return (
         <TouchableOpacity style={styles.container} onPress={() => setShowValue(!showValue)}>
-            <Text style={styles.date}>{data.date}</Text>
+            <Text style={styles.date}>{new Date(data.date).toLocaleDateString('pt-BR', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+            })}
+            </Text>
 
             <View style={styles.content}>
-                <Text style={styles.label}>{data.label}</Text>
+                <Text style={styles.label}>{data.name}</Text>
 
                 {showValue ? (
-                    <Text style={data.type === 1 ? styles.value : styles.expenses}>
-                        {data.type === 1 ? `R$ ${data.value}` : `R$ -${data.value}`}</Text>
+                    <Text style={data.transactionType === 1 ? styles.value : styles.expenses}>
+                        {data.transactionType === 1 ? `R$ ${data.value}` : `R$ -${data.value}`}</Text>
                 ) : (
-                <View style={styles.skeleton}></View>
-               )}
+                    <View style={styles.skeleton}></View>
+                )}
             </View>
         </TouchableOpacity>
     );
