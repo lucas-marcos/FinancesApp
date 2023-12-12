@@ -1,4 +1,4 @@
-import React, { useState, useEffect  } from 'react'
+import React, { useState, useEffect } from 'react'
 import { AntDesign } from '@expo/vector-icons'
 import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
 import Header from '../../components/Header';
@@ -6,25 +6,25 @@ import Balance from '../../components/Balance';
 import Moviments from '../../components/Moviments';
 import Actions from '../../components/Actions';
 import ModalAddExpense from '../../modals/ModalAddExpense';
-import axios from 'axios';
+import { requestGetAll, requestPost } from '../../services/api';
+
 
 
 export default function Home() {
   const [modalVisible, setModalVisible] = React.useState(false);
   const [list, setList] = useState([]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('https://efd0-2804-37c4-82c3-cd44-70f4-e7aa-6f8b-c644.ngrok-free.app/api/finances');
-
-        setList(response.data); 
-      } catch (error) {
-        console.error('Erro ao obter dados:', error);
-      }
+  function listAll() {
+    const fetchDataFromApi = async () => {
+      const data = await requestGetAll();
+      setList(data);
     };
+  
+    fetchDataFromApi();
+  }
 
-    fetchData();
+  useEffect(() => {
+    listAll();
   }, []);
 
   return (
@@ -45,7 +45,7 @@ export default function Home() {
         renderItem={({ item }) => <Moviments data={item} />}
       ></FlatList>
 
-      <ModalAddExpense isOpen={modalVisible} onClose={() => setModalVisible(false)} />
+      <ModalAddExpense isOpen={modalVisible} listAll={listAll} requestPost={requestPost} onClose={() => setModalVisible(false)} />
 
       <TouchableOpacity style={styles.actionButton}>
         <View>
