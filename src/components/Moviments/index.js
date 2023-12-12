@@ -2,7 +2,14 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 export default function Moviments({ data }) {
-    const [showValue, setShowValue] = useState(false);
+    const [showValue, setShowValue] = useState(true);
+
+    function returnCurrency(value) {
+        return value.toLocaleString('pt-BR', {
+          style: 'currency',
+          currency: 'BRL',
+        });
+      }
 
     return (
         <TouchableOpacity style={styles.container} onPress={() => setShowValue(!showValue)}>
@@ -18,7 +25,7 @@ export default function Moviments({ data }) {
 
                 {showValue ? (
                     <Text style={data.transactionType === 1 ? styles.value : styles.expenses}>
-                        {data.transactionType === 1 ? `R$ ${data.value}` : `R$ -${data.value}`}</Text>
+                        {returnCurrency(data.value)}</Text>
                 ) : (
                     <View style={styles.skeleton}></View>
                 )}

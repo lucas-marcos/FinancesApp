@@ -8,18 +8,36 @@ import Actions from '../../components/Actions';
 import ModalAddExpense from '../../modals/ModalAddExpense';
 import { requestGetAll, requestPost } from '../../services/api';
 
-
-
 export default function Home() {
   const [modalVisible, setModalVisible] = React.useState(false);
   const [list, setList] = useState([]);
+  const [expense, setExpense] = useState("");
+  const [income, setIncome] = useState("");
+
+  function returnCurrency(value) {
+    return value.toLocaleString('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+    });
+  }
 
   function listAll() {
     const fetchDataFromApi = async () => {
       const data = await requestGetAll();
+
+      const expenseValue = data
+        .filter(x => x.transactionType === 0)
+        .reduce((soma, elemento) => soma + elemento.value, 0);
+
+      const incomeValue = data
+        .filter(x => x.transactionType === 1)
+        .reduce((soma, elemento) => soma + elemento.value, 0);
+
+      setExpense(returnCurrency(expenseValue));
+      setIncome(returnCurrency(incomeValue));
       setList(data);
     };
-  
+
     fetchDataFromApi();
   }
 
@@ -31,7 +49,7 @@ export default function Home() {
     <View style={styles.container}>
       <Header name="Lucas Marcos"></Header>
 
-      <Balance saldo="9.250,90" gastos="-527,00"></Balance>
+      <Balance income={income} expense={expense}></Balance>
 
       <Actions />
 

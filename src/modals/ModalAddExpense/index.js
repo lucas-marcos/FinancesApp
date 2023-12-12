@@ -1,20 +1,21 @@
 import React, { useState } from 'react';
-import { Modal, FormControl, Input, Button } from 'native-base'; 
+import { Modal, FormControl, Input, Button, Switch } from 'native-base';
 
 export default function ModalAddExpense({ isOpen, onClose, requestPost, listAll }) {
   const [descricao, setDescricao] = useState('');
-  const [valor, setValor] = useState(0);
+  const [valor, setValor] = useState('');
+  const [ehEntrada, setEhEntrada] = useState(false);
 
   const handlePress = async () => {
     try {
-      const response = await requestPost({ name: descricao, value: valor, description: '', transactionType: 0 });
+      const response = await requestPost({ name: descricao, value: valor.replace(',', '.'), description: '', transactionType: ehEntrada ? 1 : 0 });
 
       console.log('Dados adicionados com sucesso:', response);
 
       setDescricao('');
       setValor('');
 
-      if(response.id > 0){
+      if (response.id > 0) {
         onClose();
       }
       listAll();
@@ -40,7 +41,15 @@ export default function ModalAddExpense({ isOpen, onClose, requestPost, listAll 
             <Input
               value={valor}
               keyboardType="numeric"
-              onChangeText={(text) => setValor(parseInt(text))}
+              onChangeText={(text) => setValor(text)}
+            />
+          </FormControl>
+          <FormControl mt="3">
+            <FormControl.Label>Entrada</FormControl.Label>
+            <Switch
+              size="sm"
+              value={ehEntrada}
+              onToggle={() => setEhEntrada(!ehEntrada)}
             />
           </FormControl>
         </Modal.Body>
