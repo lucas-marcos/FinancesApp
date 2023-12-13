@@ -11,10 +11,14 @@ npm install -g expo-cli
 
 ## Instalação
 
-1) Clone o repositório:
-
+1) Clone o repositório do Front(React Native) e do BackEnd(.Net && C#):
+Front:
 ```bash
 git clone https://github.com/lucas-marcos/FinancesApp.git
+```
+Back:
+```bash
+https://github.com/lucas-marcos/FinancesApp.API.git
 ```
 
 2) Navegue até o diretório do projeto:
