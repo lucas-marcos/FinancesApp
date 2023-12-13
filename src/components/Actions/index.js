@@ -2,14 +2,18 @@ import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-nati
 import { AntDesign } from '@expo/vector-icons'
 import { Select } from "native-base";
 
-export default function Actions({selectedMonth, onUpdateMonth }) {
-
-
+export default function Actions({selectedMonth, onUpdateMonth, setTypeTransaction, typeTransaction }) {
     return (
         <View>
 
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={styles.container}>
-                <TouchableOpacity style={styles.actionButton}>
+                <TouchableOpacity style={styles.actionButton}     onPress={() => {
+                        if (typeTransaction == 1) {
+                            setTypeTransaction(null);
+                        }else{
+                            setTypeTransaction(1);
+                        }
+                    }}>
 
                     <View style={styles.areaButton}>
                         <AntDesign name='addfolder' size={26} color="#000"></AntDesign>
@@ -17,7 +21,14 @@ export default function Actions({selectedMonth, onUpdateMonth }) {
                     <Text style={styles.labelButton}>Entradas</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.actionButton}>
+                <TouchableOpacity style={styles.actionButton}     onPress={() => {
+                        if (typeTransaction == 0) {
+                            setTypeTransaction(null);
+                        }
+                        else{
+                            setTypeTransaction(0);
+                        }
+                    }}>
 
                     <View style={styles.areaButton}>
                         <AntDesign name='tagso' size={26} color="#000"></AntDesign>

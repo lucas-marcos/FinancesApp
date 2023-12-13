@@ -6,7 +6,7 @@ import Balance from '../../components/Balance';
 import Moviments from '../../components/Moviments';
 import Actions from '../../components/Actions';
 import ModalAddExpense from '../../modals/ModalAddExpense';
-import { requestPost, requestGetAllByMonthNumber } from '../../services/api';
+import { requestPost, requestGetAllByMonthNumber, getAllByMonthNumberAndTransactionType } from '../../services/api';
 
 export default function Home() {
   const [modalVisible, setModalVisible] = React.useState(false);
@@ -14,6 +14,7 @@ export default function Home() {
   const [expense, setExpense] = useState("");
   const [income, setIncome] = useState("");
   const [selectedMonth, setSelectedMonth] = useState("");
+  const [typeTransaction, setTypeTransaction] = useState(null);
 
   function returnCurrency(value) {
     return value.toLocaleString('pt-BR', {
@@ -23,7 +24,13 @@ export default function Home() {
   }
 
   async function listAll() {
-    const data = await requestGetAllByMonthNumber(selectedMonth);
+    let data;
+    if(typeTransaction != null){
+       data = await getAllByMonthNumberAndTransactionType(selectedMonth, typeTransaction);
+    }
+    else{
+      data = await requestGetAllByMonthNumber(selectedMonth);
+    }
 
     const expenseValue = data
       .filter(x => x.transactionType === 0)
@@ -50,7 +57,7 @@ export default function Home() {
 
   useEffect(() => {
     listAll();
-  },[selectedMonth]) 
+  },[selectedMonth, typeTransaction]) 
 
   return (
     <View style={styles.container}>
@@ -58,7 +65,7 @@ export default function Home() {
 
       <Balance income={income} expense={expense}></Balance>
 
-      <Actions selectedMonth={selectedMonth} onUpdateMonth={updateSelectecMonth} />
+      <Actions selectedMonth={selectedMonth} onUpdateMonth={updateSelectecMonth} typeTransaction={typeTransaction} setTypeTransaction={setTypeTransaction} />
 
       <Text style={styles.title}>Últimas movimentações</Text>
 
