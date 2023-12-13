@@ -1,14 +1,9 @@
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { AntDesign } from '@expo/vector-icons'
 import { Select } from "native-base";
-import { useState } from 'react';
 
-export default function Actions() {
-    const [mes, setMes] = useState("");
+export default function Actions({selectedMonth, onUpdateMonth }) {
 
-    function updateMes(mes) {
-        setMes(mes);
-    }
 
     return (
         <View>
@@ -30,19 +25,19 @@ export default function Actions() {
                     <Text style={styles.labelButton}>Compras</Text>
                 </TouchableOpacity>
 
-                <Select selectedValue={mes} minWidth="120" accessibilityLabel="Mês" placeholder="Selecione o mês" mt={4} onValueChange={itemValue => updateMes(itemValue)}>
-                    <Select.Item label="Jan." value="jan" />
-                    <Select.Item label="Fev." value="fev" />
-                    <Select.Item label="Mar." value="mar" />
-                    <Select.Item label="Abr." value="abr" />
-                    <Select.Item label="Mai." value="mai" />
-                    <Select.Item label="Jun." value="jun" />
-                    <Select.Item label="Jul." value="jul" />
-                    <Select.Item label="Ago." value="ago" />
-                    <Select.Item label="Set." value="set" />
-                    <Select.Item label="Out." value="out" />
-                    <Select.Item label="Nov." value="nov" />
-                    <Select.Item label="Dez." value="dez" />
+                <Select selectedValue={selectedMonth} minWidth="120" accessibilityLabel="Mês" placeholder="Selecione o mês" mt={4} onValueChange={itemValue => onUpdateMonth(itemValue)}>
+                    <Select.Item label="Jan." value="1" />
+                    <Select.Item label="Fev." value="2" />
+                    <Select.Item label="Mar." value="3" />
+                    <Select.Item label="Abr." value="3" />
+                    <Select.Item label="Mai." value="5" />
+                    <Select.Item label="Jun." value="6" />
+                    <Select.Item label="Jul." value="7" />
+                    <Select.Item label="Ago." value="8" />
+                    <Select.Item label="Set." value="9" />
+                    <Select.Item label="Out." value="10" />
+                    <Select.Item label="Nov." value="11" />
+                    <Select.Item label="Dez." value="12" />
                 </Select>
 
             </ScrollView>

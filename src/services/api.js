@@ -1,18 +1,19 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://efd0-2804-37c4-82c3-cd44-70f4-e7aa-6f8b-c644.ngrok-free.app/api',
+  baseURL: 'https://5e57-2804-37c4-82c3-cd44-84b1-f8f-26f8-327e.ngrok-free.app/api',
 });
 
-export const requestGetAll = async () => {
+export const requestGetAllByMonthNumber = async (monthNumber) => {
   try {
-    const response = await api.get('/finances');
+    const response = await api.get(`/finances/month/${monthNumber}`);
     return response.data;
   } catch (error) {
     console.error('Erro ao obter dados:', error);
     throw error; 
   }
 };
+
 
 export const requestPost = async (request) => {
     try {

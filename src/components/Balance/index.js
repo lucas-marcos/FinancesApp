@@ -5,14 +5,14 @@ export default function Balance({income, expense}) {
         <View style={styles.container}>
 
             <View style={styles.item}>
-                <Text style={styles.itemTitle}>Saldo</Text>
+                <Text style={styles.itemTitle}>Entradas</Text>
                 <View style={styles.content}>
                     <Text style={styles.balance}>{income}</Text>
                 </View>
             </View>
 
             <View style={styles.item}>
-                <Text style={styles.itemTitle}>Gastos</Text>
+                <Text style={styles.itemTitle}>Saídas</Text>
                 <View style={styles.content}>
                     <Text style={styles.expensive}>{expense}</Text>
                 </View>

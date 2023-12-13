@@ -6,13 +6,14 @@ import Balance from '../../components/Balance';
 import Moviments from '../../components/Moviments';
 import Actions from '../../components/Actions';
 import ModalAddExpense from '../../modals/ModalAddExpense';
-import { requestGetAll, requestPost } from '../../services/api';
+import { requestPost, requestGetAllByMonthNumber } from '../../services/api';
 
 export default function Home() {
   const [modalVisible, setModalVisible] = React.useState(false);
   const [list, setList] = useState([]);
   const [expense, setExpense] = useState("");
   const [income, setIncome] = useState("");
+  const [selectedMonth, setSelectedMonth] = useState("");
 
   function returnCurrency(value) {
     return value.toLocaleString('pt-BR', {
@@ -21,29 +22,35 @@ export default function Home() {
     });
   }
 
-  function listAll() {
-    const fetchDataFromApi = async () => {
-      const data = await requestGetAll();
+  async function listAll() {
+    const data = await requestGetAllByMonthNumber(selectedMonth);
 
-      const expenseValue = data
-        .filter(x => x.transactionType === 0)
-        .reduce((soma, elemento) => soma + elemento.value, 0);
+    const expenseValue = data
+      .filter(x => x.transactionType === 0)
+      .reduce((soma, elemento) => soma + elemento.value, 0);
 
-      const incomeValue = data
-        .filter(x => x.transactionType === 1)
-        .reduce((soma, elemento) => soma + elemento.value, 0);
+    const incomeValue = data
+      .filter(x => x.transactionType === 1)
+      .reduce((soma, elemento) => soma + elemento.value, 0);
 
-      setExpense(returnCurrency(expenseValue));
-      setIncome(returnCurrency(incomeValue));
-      setList(data);
-    };
+    setExpense(returnCurrency(expenseValue));
+    setIncome(returnCurrency(incomeValue));
+    setList(data);
+  }
 
-    fetchDataFromApi();
+  async function updateSelectecMonth(numberMonth) {
+    await setSelectedMonth(String(numberMonth));
   }
 
   useEffect(() => {
-    listAll();
+    let numberMonth = new Date().getMonth() + 1;
+
+    updateSelectecMonth(String(numberMonth));
   }, []);
+
+  useEffect(() => {
+    listAll();
+  },[selectedMonth]) 
 
   return (
     <View style={styles.container}>
@@ -51,7 +58,7 @@ export default function Home() {
 
       <Balance income={income} expense={expense}></Balance>
 
-      <Actions />
+      <Actions selectedMonth={selectedMonth} onUpdateMonth={updateSelectecMonth} />
 
       <Text style={styles.title}>Últimas movimentações</Text>
 
