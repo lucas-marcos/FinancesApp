@@ -6,7 +6,7 @@ import Balance from '../../components/Balance';
 import Moviments from '../../components/Moviments';
 import Actions from '../../components/Actions';
 import ModalAddExpense from '../../modals/ModalAddExpense';
-import { requestPost, requestGetAllByMonthNumber, getAllByMonthNumberAndTransactionType } from '../../services/api';
+import { requestPost, requestGetAllByMonthNumber, getAllByMonthNumberAndTransactionType, deleteRequest } from '../../services/api';
 
 export default function Home() {
   const [modalVisible, setModalVisible] = React.useState(false);
@@ -45,6 +45,12 @@ export default function Home() {
     setList(data);
   }
 
+  async function deleteItem(data){
+    await deleteRequest(data);
+
+    listAll();
+  }
+
   async function updateSelectecMonth(numberMonth) {
     await setSelectedMonth(String(numberMonth));
   }
@@ -74,7 +80,7 @@ export default function Home() {
         data={list}
         keyExtractor={(item) => String(item.id)}
         showsVerticalScrollIndicator={false}
-        renderItem={({ item }) => <Moviments data={item} />}
+        renderItem={({ item }) => <Moviments data={item} deleteRequest={deleteItem} />}
       ></FlatList>
 
       <ModalAddExpense isOpen={modalVisible} listAll={listAll} requestPost={requestPost} onClose={() => setModalVisible(false)} />

@@ -34,3 +34,13 @@ export const requestPost = async (request) => {
         throw error; 
       }
 }
+
+export const deleteRequest = async (id) => {
+  try {
+      const response = await api.delete(`/finances/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error('Erro ao deletar os dados:', error);
+      throw error; 
+    }
+}

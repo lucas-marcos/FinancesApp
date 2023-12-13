@@ -1,36 +1,44 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import ModalDeleteFinance from '../../modals/ModalDeleteFinance';
 
-export default function Moviments({ data }) {
+export default function Moviments({ data, deleteRequest }) {
     const [showValue, setShowValue] = useState(true);
+    const [showModal, setShowModal] = useState(false);
 
     function returnCurrency(value) {
         return value.toLocaleString('pt-BR', {
-          style: 'currency',
-          currency: 'BRL',
+            style: 'currency',
+            currency: 'BRL',
         });
-      }
+    }
+
 
     return (
-        <TouchableOpacity style={styles.container} onPress={() => setShowValue(!showValue)}>
-            <Text style={styles.date}>{new Date(data.date).toLocaleDateString('pt-BR', {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric',
-            })}
-            </Text>
+        <View>
+            <ModalDeleteFinance data={data} showModal={showModal} setShowModal={setShowModal} deleteRequest={deleteRequest}></ModalDeleteFinance>
 
-            <View style={styles.content}>
-                <Text style={styles.label}>{data.name}</Text>
+            <TouchableOpacity style={styles.container} onLongPress={() => setShowModal(true)} onPress={() => setShowValue(!showValue)}>
+                <Text style={styles.date}>{data.date ? new Date(data.date).toLocaleDateString('pt-BR', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                }) : ''}
+                </Text>
 
-                {showValue ? (
-                    <Text style={data.transactionType === 1 ? styles.value : styles.expenses}>
-                        {returnCurrency(data.value)}</Text>
-                ) : (
-                    <View style={styles.skeleton}></View>
-                )}
-            </View>
-        </TouchableOpacity>
+                <View style={styles.content}>
+                    <Text style={styles.label}>{data.name}</Text>
+
+                    {showValue ? (
+                        <Text style={data.transactionType === 1 ? styles.value : styles.expenses}>
+                            {returnCurrency(data.value)}</Text>
+                    ) : (
+                        <View style={styles.skeleton}></View>
+                    )}
+                </View>
+            </TouchableOpacity>
+        </View>
+
     );
 }
 
